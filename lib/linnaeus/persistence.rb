@@ -32,6 +32,11 @@ module Linnaeus
       @redis.smembers CATEGORIES_KEY
     end
 
+    def get_words_with_count_for_category(category)
+      @redis.hgetall BASE_CATEGORY_KEY + category
+      #@redis.hgetall(BASE_CATEGORY_KEY + category).inject(0) {|sum, count| sum += count.to_i}
+    end
+
     def clear_all_training_data
       @redis.flushdb
     end

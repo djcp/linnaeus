@@ -8,12 +8,15 @@ describe Linnaeus::Trainer do
       subject.count_word_occurrences('foo bar foo baz').should == 
         { 'foo' => 2, 'bar' => 1, 'baz' => 1 }
     end
+
     it 'should not count stopwords' do
       subject.count_word_occurrences('foo the you').should == { 'foo' => 1 }
     end
+
     it 'returns an empty hash when given an empty string' do
       subject.count_word_occurrences.should == { }
     end
+
   end
 
   context 'with non-default stopwords' do

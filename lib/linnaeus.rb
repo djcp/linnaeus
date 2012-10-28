@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__)) unless $LOAD_PATH.include?(File.dirname(__FILE__))
 
 require 'redis'
-require 'stemmer'
+#require 'stemmer'
 
 module Linnaeus
   module Helpers
@@ -10,6 +10,18 @@ module Linnaeus
         cat.to_s.downcase.gsub(/[^a-z\d\.\-_]/,'')
       end.reject{|cat| cat == ''}.compact
     end
+    def count_word_occurrences(text = '')
+      count = {}
+      text.downcase.split.each do |word|
+        unless stopwords.include? word
+          count[word] = count[word] ? count[word] + 1 : 1
+        end
+      end
+      count
+    end
+    def stopwords
+      @stopwords ||= @stopword_generator.to_set
+    end
   end
 end
 
@@ -17,6 +29,4 @@ require 'set'
 require 'linnaeus/stopwords'
 require 'linnaeus/persistence'
 require 'linnaeus/trainer'
-#require 'linnaeus/classifier'
-#require 'linnaeus/stopwords'
-#require 'linnaeus/tokenizer'
+require 'linnaeus/classifier'

@@ -32,19 +32,5 @@ module Linnaeus
       end
     end
 
-    def count_word_occurrences(text = '')
-      count = {}
-      text.downcase.split.each do |word|
-        unless stopwords.include? word
-          count[word] = count[word] ? count[word] + 1 : 1
-        end
-      end
-      count
-    end
-
-    def stopwords
-      @stopwords ||= @stopword_generator.to_set
-    end
-
   end
 end
