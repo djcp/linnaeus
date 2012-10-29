@@ -17,6 +17,37 @@ describe Linnaeus::Trainer do
       subject.count_word_occurrences.should == { }
     end
 
+    it 'should train on documents properly' do
+      lp = Linnaeus::Persistence.new
+      lp.clear_all_training_data
+      subject.train 'fruit', grape
+      subject.train 'fruit', orange
+      lp.get_words_with_count_for_category('fruit').should eq(
+        {
+        "grape"=>"1", "purpl"=>"1", "blue"=>"1", "green"=>"1", 
+        "fruit"=>"2", "sweet"=>"2", "wine"=>"1", "oval"=>"1", 
+        "orang"=>"1", "round"=>"1", "citru"=>"1"
+      })
+    end
+
+    it 'should partially untrain properly' do
+      lp = Linnaeus::Persistence.new
+      lp.clear_all_training_data
+      subject.train 'fruit', grape
+      subject.train 'fruit', orange
+
+      subject.untrain 'fruit', grape
+      lp.get_words_with_count_for_category('fruit').should eq({"fruit"=>"1", "sweet"=>"1", "orang"=>"1", "round"=>"1", "citru"=>"1"})
+    end
+
+    it 'should fully untrain properly' do
+      lp = Linnaeus::Persistence.new
+      lp.clear_all_training_data
+      subject.train 'fruit', grape
+      subject.untrain 'fruit', grape
+      lp.get_words_with_count_for_category('fruit').should eq({})
+    end
+
   end
 
   context 'with non-default stopwords' do
@@ -24,6 +55,14 @@ describe Linnaeus::Trainer do
     it 'should count word occurrencs properly' do
       subject.count_word_occurrences('foo bar foo baz').should == { 'baz' => 1 }
     end
+  end
+
+  def grape
+    'grape purple blue green fruit sweet wine oval'
+  end
+
+  def orange
+    'orange round citrus fruit sweet'
   end
 end
 

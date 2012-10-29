@@ -33,7 +33,6 @@ class Linnaeus::Persistence < Linnaeus
 
   def get_words_with_count_for_category(category)
     @redis.hgetall BASE_CATEGORY_KEY + category
-    #@redis.hgetall(BASE_CATEGORY_KEY + category).inject(0) {|sum, count| sum += count.to_i}
   end
 
   def clear_all_training_data
@@ -58,11 +57,11 @@ class Linnaeus::Persistence < Linnaeus
 
   def cleanup_empty_words_in_category(category)
     word_counts = @redis.hgetall BASE_CATEGORY_KEY + category
-    cleaned_word_count = word_counts.reject{|word, count| count.to_i <= 0}
-    if cleaned_word_count.empty?
+    empty_words = word_counts.select{|word, count| count.to_i <= 0}
+    if empty_words == word_counts
       @redis.del BASE_CATEGORY_KEY + category
     else
-      @redis.mapped_hmset BASE_CATEGORY_KEY + category, cleaned_word_count
+      @redis.hdel BASE_CATEGORY_KEY + category, empty_words.keys
     end
   end
 
