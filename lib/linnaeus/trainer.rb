@@ -1,5 +1,13 @@
+# Train or untrain documents from the Bayesian corpus.
 class Linnaeus::Trainer < Linnaeus
 
+  # Add a document to the training corpus.
+  #
+  # == Parameters
+  # categories::
+  #   A string or array of categories
+  # text::
+  #   A string of text in this document.
   def train(categories, text)
     categories = normalize_categories categories
     @db.add_categories(categories)
@@ -10,6 +18,13 @@ class Linnaeus::Trainer < Linnaeus
     end
   end
 
+  # Remove a document from the training corpus.
+  #
+  # == Parameters
+  # categories::
+  #   A string or array of categories
+  # text::
+  #   A string of text in this document.
   def untrain(categories, text)
     categories = normalize_categories categories
 

@@ -1,6 +1,19 @@
 = Linnaeus
 
-Linnaeus is a redis-backed Bayesian classification system.
+https://raw.github.com/djcp/linnaeus/master/images/linnaeus.jpg
+
+Linnaeus is a redis-backed Bayesian classification system. Please see the generated rdocs for more information.
+
+== Examples
+
+  lt = Linnaeus::Trainer.new      # Used to train documents
+  lc = Linnaeus::Classifier.new   # Used to classify documents
+
+  lt.train 'language', 'Ruby is a dynamic, reflective, general-purpose object-oriented programming language that combines syntax inspired by Perl with Smalltalk-like features.'
+  lt.train 'database', 'PostgreSQL, often simply Postgres, is an object-relational database management system (ORDBMS) available for many platforms including Linux, FreeBSD, Solaris, Microsoft Windows and Mac OS X.'
+
+  lc.classify 'Perl is a high-level, general-purpose, interpreted, dynamic programming language.' # returns "language"
+
 
 == Contributing to linnaeus
  
@@ -14,5 +27,8 @@ Linnaeus is a redis-backed Bayesian classification system.
 
 == Copyright
 
-Copyright (c) 2012 djcp. See LICENSE.txt for further details.
+Copyright (c) 2012 Dan Collis-Puro. See LICENSE.txt for further details.
 
+== Credits
+
+* Image courtesy wikipedia. About Carl Linnaeus: http://en.wikipedia.org/wiki/Linnaeus

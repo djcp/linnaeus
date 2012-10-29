@@ -1,5 +1,8 @@
+# The redis persistence layer.
 class Linnaeus::Persistence < Linnaeus
+  # The Set (in the redis sense) of categories are stored in this key.
   CATEGORIES_KEY = 'Linnaeus:category'
+  # The base key for a category in the redis corpus. Word occurrence counts for a category appear under here.
   BASE_CATEGORY_KEY = 'Linnaeus:cat:'
 
   attr_accessor :redis
@@ -19,26 +22,57 @@ class Linnaeus::Persistence < Linnaeus
     self
   end
 
+  # Add categories to the bayesian corpus.
+  #
+  # == Parameters
+  # categories::
+  #   A string or array of categories.
   def add_categories(categories)
     @redis.sadd CATEGORIES_KEY, categories
   end
 
+  # Remove categories from the bayesian corpus
+  #
+  # == Parameters
+  # categories::
+  #   A string or array of categories.
   def remove_category(category)
     @redis.srem CATEGORIES_KEY, category
   end
 
+  # Get categories from the bayesian corpus
+  #
+  # == Parameters
+  # categories::
+  #   A string or array of categories.
   def get_categories
     @redis.smembers CATEGORIES_KEY
   end
 
+  # Get a list of words with their number of occurrences.
+  # 
+  # == Parameters
+  # category::
+  #   A string representing a category.
+  #
+  # == Returns
+  # A hash with the word counts for this category.
   def get_words_with_count_for_category(category)
     @redis.hgetall BASE_CATEGORY_KEY + category
   end
 
+  # Clear all training data from the backend.
   def clear_all_training_data
     @redis.flushdb
   end
 
+  # Increment word counts within a category
+  #
+  # == Parameters
+  # category::
+  #   A string representing a category.
+  # word_occurrences::
+  #   A hash containing a count of the number of word occurences in a document
   def increment_word_counts_for_category(category, word_occurrences)
     @redis.multi do |multi|
       word_occurrences.each do|word,count|
@@ -47,6 +81,13 @@ class Linnaeus::Persistence < Linnaeus
     end
   end
 
+  # Decrement word counts within a category. This is used when removing a document from the corpus.
+  #
+  # == Parameters
+  # category::
+  #   A string representing a category.
+  # word_occurrences::
+  #   A hash containing a count of the number of word occurences in a document
   def decrement_word_counts_for_category(category, word_occurrences)
     @redis.multi do |multi|
       word_occurrences.each do|word,count|
@@ -55,6 +96,11 @@ class Linnaeus::Persistence < Linnaeus
     end
   end
 
+  # Clean out words with a count of zero in a category. Used during untraining.
+  #
+  # == Parameters
+  # category::
+  #   A string representing a category.
   def cleanup_empty_words_in_category(category)
     word_counts = @redis.hgetall BASE_CATEGORY_KEY + category
     empty_words = word_counts.select{|word, count| count.to_i <= 0}
