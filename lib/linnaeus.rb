@@ -18,17 +18,6 @@ class Linnaeus
     @skip_stemming = options[:skip_stemming]
   end
 
-  # Format categories for training or untraining.
-  #
-  # == Parameters
-  # categories::
-  #   A string or array of categories
-  def normalize_categories(categories = [])
-    [categories].flatten.collect do |cat|
-      cat.to_s.downcase.gsub(/[^a-z\d\.\-_]/,'')
-    end.reject{|cat| cat == ''}.compact
-  end
-
   # Count occurences of words in a text corpus.
   #
   # == Parameters
@@ -43,6 +32,18 @@ class Linnaeus
       end
     end
     count
+  end
+
+  private
+  # Format categories for training or untraining.
+  #
+  # == Parameters
+  # categories::
+  #   A string or array of categories
+  def normalize_categories(categories = [])
+    [categories].flatten.collect do |cat|
+      cat.to_s.downcase.gsub(/[^a-z\d\.\-_]/,'')
+    end.reject{|cat| cat == ''}.compact
   end
 
   # Get a Set of stopwords to remove from documents for training / classifying.
