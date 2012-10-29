@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/djcp/linnaeus"
   gem.license = "MIT"
   gem.summary = %Q{Another redis-backed Bayesian classifier}
-  gem.description = %Q{Linnaeus provides a redis-backed Bayesian classifier}
+  gem.description = %Q{Linnaeus provides a redis-backed Bayesian classifier. Words are stemmed, stopwords are stopped, and redis is used to allow for persistent and concurrent training and classification.}
   gem.email = "dan@collispuro.net"
   gem.authors = ["djcp"]
   # dependencies defined in Gemfile
