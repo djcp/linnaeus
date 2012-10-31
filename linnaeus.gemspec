@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "linnaeus"
-  s.version = "1.0.0"
+  s.version = "1.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["djcp"]
-  s.date = "2012-10-30"
+  s.date = "2012-10-31"
   s.description = "Linnaeus provides a redis-backed Bayesian classifier. Words are stemmed, stopwords are stopped, and redis is used to allow for persistent and concurrent training and classification."
   s.email = "dan@collispuro.net"
   s.extra_rdoc_files = [
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
     "lib/linnaeus/persistence.rb",
     "lib/linnaeus/stopwords.rb",
     "lib/linnaeus/trainer.rb",
+    "linnaeus.gemspec",
     "spec/linnaeus_classifier_spec.rb",
     "spec/linnaeus_persistence_spec.rb",
     "spec/linnaeus_spec.rb",
