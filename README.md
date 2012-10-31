@@ -7,13 +7,13 @@ Linnaeus is a redis-backed naive Bayesian classification system. Please see the 
 Examples
 --------
 
-  lt = Linnaeus::Trainer.new      # Used to train documents
-  lc = Linnaeus::Classifier.new   # Used to classify documents
+    lt = Linnaeus::Trainer.new      # Used to train documents
+    lc = Linnaeus::Classifier.new   # Used to classify documents
 
-  lt.train 'language', 'Ruby is a dynamic, reflective, general-purpose object-oriented programming language that combines syntax inspired by Perl with Smalltalk-like features.'
-  lt.train 'database', 'PostgreSQL, often simply Postgres, is an object-relational database management system (ORDBMS) available for many platforms including Linux, FreeBSD, Solaris, Microsoft Windows and Mac OS X.'
+    lt.train 'language', 'Ruby is a dynamic, reflective, general-purpose object-oriented programming language that combines syntax inspired by Perl with Smalltalk-like features.'
+    lt.train 'database', 'PostgreSQL, often simply Postgres, is an object-relational database management system (ORDBMS) available for many platforms including Linux, FreeBSD, Solaris, Microsoft Windows and Mac OS X.'
 
-  lc.classify 'Perl is a high-level, general-purpose, interpreted, dynamic programming language.' # returns "language"
+    lc.classify 'Perl is a high-level, general-purpose, interpreted, dynamic programming language.' # returns "language"
 
 
 Contributing to linnaeus
