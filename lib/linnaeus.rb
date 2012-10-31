@@ -10,12 +10,14 @@ class Linnaeus
     options = {
       persistence_class: Persistence,
       stopwords_class: Stopwords,
-      skip_stemming: false
+      skip_stemming: false,
+      encoding: 'UTF-8'
     }.merge(opts)
 
     @db = options[:persistence_class].new(options)
     @stopword_generator = options[:stopwords_class].new
     @skip_stemming = options[:skip_stemming]
+    @encoding = options[:encoding]
   end
 
   # Count occurences of words in a text corpus.
@@ -25,7 +27,7 @@ class Linnaeus
   #   A string representing a document.  Stopwords are removed and words are stemmed using the "Stemmer" gem.
   def count_word_occurrences(text = '')
     count = {}
-    text.downcase.split.each do |word|
+    text.encode(@encoding).downcase.split.each do |word|
       stemmed_word = (@skip_stemming) ? word : word.stem_porter
       unless stopwords.include? stemmed_word
         count[stemmed_word] = count[stemmed_word] ? count[stemmed_word] + 1 : 1

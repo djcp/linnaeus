@@ -11,14 +11,27 @@ class Linnaeus::Persistence < Linnaeus
     options = {
       redis_host: '127.0.0.1',
       redis_port: '6379',
-      redis_db: 0
+      redis_db: 0,
+      redis_scheme: "redis",
+      redis_path: nil,
+      redis_timeout: 5.0,
+      redis_password: nil,
+      redis_id: nil,
+      redis_tcp_keepalive: 0
     }.merge(opts)
 
     @redis = Redis.new(
       host: options[:redis_host],
       port: options[:redis_port],
-      db: options[:redis_db]
+      db: options[:redis_db],
+      scheme: options[:redis_scheme],
+      path: options[:redis_path],
+      timeout: options[:redis_timeout],
+      password: options[:redis_password],
+      id: options[:redis_id],
+      tcp_keepalive: options[:redis_tcp_keepalive]
     )
+
     self
   end
 
@@ -74,10 +87,8 @@ class Linnaeus::Persistence < Linnaeus
   # word_occurrences::
   #   A hash containing a count of the number of word occurences in a document
   def increment_word_counts_for_category(category, word_occurrences)
-    @redis.multi do |multi|
-      word_occurrences.each do|word,count|
-        multi.hincrby BASE_CATEGORY_KEY + category, word, count
-      end
+    word_occurrences.each do|word,count|
+      @redis.hincrby BASE_CATEGORY_KEY + category, word, count
     end
   end
 
@@ -89,10 +100,8 @@ class Linnaeus::Persistence < Linnaeus
   # word_occurrences::
   #   A hash containing a count of the number of word occurences in a document
   def decrement_word_counts_for_category(category, word_occurrences)
-    @redis.multi do |multi|
-      word_occurrences.each do|word,count|
-        multi.hincrby BASE_CATEGORY_KEY + category, word, - count
-      end
+    word_occurrences.each do|word,count|
+      @redis.hincrby BASE_CATEGORY_KEY + category, word, - count
     end
   end
 
