@@ -5,16 +5,16 @@
 
 Gem::Specification.new do |s|
   s.name = "linnaeus"
-  s.version = "1.0.2"
+  s.version = "1.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["djcp"]
-  s.date = "2012-10-31"
+  s.date = "2012-11-02"
   s.description = "Linnaeus provides a redis-backed Bayesian classifier. Words are stemmed, stopwords are stopped, and redis is used to allow for persistent and concurrent training and classification."
   s.email = "dan@collispuro.net"
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "images/linnaeus.jpg",
@@ -58,6 +58,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<bundler>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
+      s.add_development_dependency(%q<redcarpet>, [">= 0"])
     else
       s.add_dependency(%q<redis>, ["~> 3.0.0"])
       s.add_dependency(%q<stemmer>, ["~> 1.0.0"])
@@ -67,6 +68,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<simplecov>, [">= 0"])
+      s.add_dependency(%q<redcarpet>, [">= 0"])
     end
   else
     s.add_dependency(%q<redis>, ["~> 3.0.0"])
@@ -77,6 +79,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<simplecov>, [">= 0"])
+    s.add_dependency(%q<redcarpet>, [">= 0"])
   end
 end
 
