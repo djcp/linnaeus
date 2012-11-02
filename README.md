@@ -2,7 +2,7 @@
 
 ![Carl Linnaeus](https://raw.github.com/djcp/linnaeus/master/images/linnaeus.jpg)
 
-Linnaeus is a redis-backed naive Bayesian classification system. Please see the generated rdocs for more information. Ruby 1.9 is required.
+Linnaeus is a redis-backed naive Bayesian classification system. Please see the [rdoc](http://rubydoc.info/gems/linnaeus/) for more information. Ruby 1.9 is required.
 
 Examples
 --------

@@ -44,7 +44,7 @@ class Linnaeus
   #   A string or array of categories
   def normalize_categories(categories = [])
     [categories].flatten.collect do |cat|
-      cat.to_s.downcase.gsub(/[^a-z\d\.\-_]/,'')
+      cat.to_s.encode(@encoding).downcase.gsub(/[^a-z\d\.\-_ ]/,'')
     end.reject{|cat| cat == ''}.compact
   end
 

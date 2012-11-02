@@ -116,7 +116,9 @@ class Linnaeus::Persistence < Linnaeus
     if empty_words == word_counts
       @redis.del BASE_CATEGORY_KEY + category
     else
-      @redis.hdel BASE_CATEGORY_KEY + category, empty_words.keys
+      if empty_words.any?
+        @redis.hdel BASE_CATEGORY_KEY + category, empty_words.keys
+      end
     end
   end
 

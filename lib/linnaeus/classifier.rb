@@ -57,7 +57,12 @@ class Linnaeus::Classifier < Linnaeus
   # == Returns
   # A string representing the most likely category.
   def classify(text)
-    (classification_scores(text).sort_by { |a| -a[1] })[0][0]
+    scores = classification_scores(text)
+    if scores.any?
+      (scores.sort_by { |a| -a[1] })[0][0]
+    else
+      ''
+    end
   end
 
 end

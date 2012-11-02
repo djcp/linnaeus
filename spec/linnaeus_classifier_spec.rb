@@ -1,11 +1,31 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Linnaeus::Classifier do
+  context 'with no training data' do
+    it 'should return empty values when attempting to classify' do
+      Linnaeus::Persistence.new.clear_all_training_data
+      subject.classify("foo bar baz").should be_empty
+      subject.classification_scores("foo bar baz").should be_empty
+    end
+  end
+
   context 'with a very small dataset' do
-    it 'should classify easy things well' do
+    before do
       create_small_dataset
+    end
+
+    it 'should classify easy things well' do
       subject.classify('A bird that migrates').should eq('bird')
       subject.classify('This was directed by Gus Van Sant').should eq('movie')
+    end
+
+    it 'should return correct classification scores' do
+      subject.classification_scores('a bird').should eq(
+        { "movie"=>-6.272877006546167, "bird"=>-4.2626798770413155 }
+      )
+      subject.classification_scores('a directorial bird').should eq(
+        { "movie"=>-10.24316892009829, "bird"=>-10.827944847076676 }
+      )
     end
   end
 

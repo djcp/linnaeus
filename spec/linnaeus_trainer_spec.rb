@@ -52,7 +52,7 @@ describe Linnaeus::Trainer do
 
   context 'with non-default stopwords' do
     subject { Linnaeus::Trainer.new(stopwords_class: FooStop) }
-    it 'should count word occurrencs properly' do
+    it 'should count word occurrences properly' do
       subject.count_word_occurrences('foo bar foo baz').should == { 'baz' => 1 }
     end
   end
