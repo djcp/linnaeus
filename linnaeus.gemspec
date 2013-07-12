@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "linnaeus"
-  s.version = "1.0.3"
+  s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["djcp"]
-  s.date = "2012-11-02"
+  s.date = "2013-07-12"
   s.description = "Linnaeus provides a redis-backed Bayesian classifier. Words are stemmed, stopwords are stopped, and redis is used to allow for persistent and concurrent training and classification."
   s.email = "dan@collispuro.net"
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
+    ".ruby-version",
     ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
@@ -43,11 +44,11 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/djcp/linnaeus"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "2.0.0"
   s.summary = "Another redis-backed Bayesian classifier"
 
   if s.respond_to? :specification_version then
-    s.specification_version = 3
+    s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<redis>, ["~> 3.0.0"])

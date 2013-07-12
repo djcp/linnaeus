@@ -17,17 +17,8 @@ describe Linnaeus::Trainer do
       subject.count_word_occurrences.should == { }
     end
 
-    it 'should train on documents properly' do
-      lp = Linnaeus::Persistence.new
-      lp.clear_all_training_data
-      subject.train 'fruit', grape
-      subject.train 'fruit', orange
-      lp.get_words_with_count_for_category('fruit').should eq(
-        {
-        "grape"=>"1", "purpl"=>"1", "blue"=>"1", "green"=>"1", 
-        "fruit"=>"2", "sweet"=>"2", "wine"=>"1", "oval"=>"1", 
-        "orang"=>"1", "round"=>"1", "citru"=>"1"
-      })
+    it 'should train documents properly' do
+      train_documents_properly
     end
 
     it 'should partially untrain properly' do
@@ -55,6 +46,26 @@ describe Linnaeus::Trainer do
     it 'should count word occurrences properly' do
       subject.count_word_occurrences('foo bar foo baz').should == { 'baz' => 1 }
     end
+  end
+
+  context 'with a custom scope' do
+    it 'should train on documents properly' do
+      train_documents_properly(scope: 'new-scope')
+    end
+  end
+
+  def train_documents_properly(options = {})
+    lp = Linnaeus::Persistence.new(options)
+    lp.clear_all_training_data
+    subject = described_class.new(options)
+    subject.train 'fruit', grape
+    subject.train 'fruit', orange
+    lp.get_words_with_count_for_category('fruit').should eq(
+      {
+      "grape"=>"1", "purpl"=>"1", "blue"=>"1", "green"=>"1",
+      "fruit"=>"2", "sweet"=>"2", "wine"=>"1", "oval"=>"1",
+      "orang"=>"1", "round"=>"1", "citru"=>"1"
+    })
   end
 
   def grape

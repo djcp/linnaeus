@@ -3,7 +3,58 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Linnaeus::Persistence do
   before do
     lp = get_linnaeus_persistence
-    lp.clear_all_training_data
+    lp.clear_training_data
+  end
+
+  it 'sets keys properly with defaults' do
+    lp2 = get_linnaeus_persistence
+    train_a_document_in('foobar')
+    lp2.redis.keys('*').should eq ['Linnaeus:category', 'Linnaeus:cat:foobar']
+  end
+
+  context "custom scopes" do
+    it 'sets keys properly' do
+      lp2 = get_linnaeus_persistence(scope: 'new-scope')
+      lp2.clear_all_training_data
+
+      train_a_document_in('foobar', scope: 'new-scope')
+
+      lp2.redis.keys('*').sort.should eq [
+        'Linnaeus:new-scope:cat:foobar', 'Linnaeus:new-scope:category'
+      ]
+    end
+
+    it 'can clear scoped training data separately' do
+      lp = get_linnaeus_persistence
+
+      train_a_document_in('foobar')
+
+      lp2 = get_linnaeus_persistence(scope: 'new-scope')
+
+      train_a_document_in('foobar', scope: 'new-scope')
+
+      lp.redis.keys.sort.should eq [
+        "Linnaeus:cat:foobar", "Linnaeus:category",
+        "Linnaeus:new-scope:cat:foobar", "Linnaeus:new-scope:category"
+      ]
+
+      lp2.clear_training_data
+
+      lp.redis.keys.sort.should eq [
+        "Linnaeus:cat:foobar", "Linnaeus:category"
+      ]
+    end
+
+    it 'stores categories successfully into different scopes' do
+      lp = get_linnaeus_persistence
+      add_categories lp
+
+      lp2 = get_linnaeus_persistence(scope: 'new-scope')
+      add_categories lp2, ['slack' , 'frop']
+
+      lp2.get_categories.sort.should eq ['frop', 'slack']
+      lp.get_categories.sort.should eq ['bar','baz','foo']
+    end
   end
 
   it '#clear_all_training_data' do
@@ -64,21 +115,21 @@ describe Linnaeus::Persistence do
     lp.get_words_with_count_for_category('testcategory').should eq ({})
   end
 
-  def add_categories(lp)
-    lp.add_categories(['foo','bar','baz','foo', 'bar'])
+  def add_categories(lp, categories = ['foo','bar','baz','foo', 'bar'])
+    lp.add_categories(categories)
   end
 
-  def get_linnaeus_persistence
-    @lp ||= Linnaeus::Persistence.new
+  def get_linnaeus_persistence(options = {})
+    Linnaeus::Persistence.new(options)
   end
 
-  def train_a_document_in(category)
-    lt = Linnaeus::Trainer.new
+  def train_a_document_in(category, options = {})
+    lt = Linnaeus::Trainer.new(options)
     lt.train category, document
   end
 
-  def untrain_a_document_in(category)
-    lt = Linnaeus::Trainer.new
+  def untrain_a_document_in(category, options = {})
+    lt = Linnaeus::Trainer.new(options)
     lt.untrain category, document
   end
 
