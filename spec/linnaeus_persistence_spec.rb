@@ -9,7 +9,7 @@ describe Linnaeus::Persistence do
   it 'sets keys properly with defaults' do
     lp2 = get_linnaeus_persistence
     train_a_document_in('foobar')
-    lp2.redis.keys('*').should eq ['Linnaeus:category', 'Linnaeus:cat:foobar']
+    lp2.redis.keys('*').should match_array ['Linnaeus:category', 'Linnaeus:cat:foobar']
   end
 
   context "custom scopes" do
@@ -19,7 +19,7 @@ describe Linnaeus::Persistence do
 
       train_a_document_in('foobar', scope: 'new-scope')
 
-      lp2.redis.keys('*').sort.should eq [
+      lp2.redis.keys('*').should match_array [
         'Linnaeus:new-scope:cat:foobar', 'Linnaeus:new-scope:category'
       ]
     end
@@ -33,14 +33,14 @@ describe Linnaeus::Persistence do
 
       train_a_document_in('foobar', scope: 'new-scope')
 
-      lp.redis.keys.sort.should eq [
+      lp.redis.keys.should match_array [
         "Linnaeus:cat:foobar", "Linnaeus:category",
         "Linnaeus:new-scope:cat:foobar", "Linnaeus:new-scope:category"
       ]
 
       lp2.clear_training_data
 
-      lp.redis.keys.sort.should eq [
+      lp.redis.keys.should match_array [
         "Linnaeus:cat:foobar", "Linnaeus:category"
       ]
     end
@@ -52,8 +52,8 @@ describe Linnaeus::Persistence do
       lp2 = get_linnaeus_persistence(scope: 'new-scope')
       add_categories lp2, ['slack' , 'frop']
 
-      lp2.get_categories.sort.should eq ['frop', 'slack']
-      lp.get_categories.sort.should eq ['bar','baz','foo']
+      lp2.get_categories.should match_array ['frop', 'slack']
+      lp.get_categories.should match_array ['bar','baz','foo']
     end
   end
 
@@ -68,14 +68,14 @@ describe Linnaeus::Persistence do
   it 'stores categories successfully' do
     lp = get_linnaeus_persistence
     add_categories lp
-    lp.get_categories.sort.should eq ['bar','baz','foo']
+    lp.get_categories.should match_array ['bar','baz','foo']
   end
 
   it 'can remove categories' do
     lp = get_linnaeus_persistence
     add_categories lp
     lp.remove_category 'bar'
-    lp.get_categories.sort.should eq ['baz','foo']
+    lp.get_categories.should match_array ['baz','foo']
   end
 
   it '#get_words_with_count_for_category' do

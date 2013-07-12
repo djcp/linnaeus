@@ -14,7 +14,7 @@ describe Linnaeus::Stopwords do
   end
   it 'can have stopwords overridden' do
     subject.stopwords = ['foo','bar']
-    subject.to_a.should eq ['foo','bar']
+    subject.to_a.should match_array ['foo','bar']
     subject.to_set.should eq ['foo','bar'].to_set
   end
 end
