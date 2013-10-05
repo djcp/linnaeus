@@ -6,6 +6,11 @@ describe Linnaeus::Persistence do
     lp.clear_training_data
   end
 
+  it "should accept an existing redis connection" do
+    lp = Linnaeus::Persistence.new(redis_connection: Redis.new)
+    lp.redis.should_not be_nil
+  end
+
   it 'sets keys properly with defaults' do
     lp2 = get_linnaeus_persistence
     train_a_document_in('foobar')
