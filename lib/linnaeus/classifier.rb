@@ -13,6 +13,8 @@
 #   Set to true to skip porter stemming.
 # encoding::
 #   Force text to use this character set. UTF-8 by default.
+# redis_connection::
+#   An instantiated Redis connection, allowing you to reuse an existing Redis connection.
 # redis_host::
 #   Passed to persistence class constructor. Defaults to "127.0.0.1"
 # redis_port::
