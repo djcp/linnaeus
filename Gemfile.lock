@@ -73,8 +73,8 @@ DEPENDENCIES
   jeweler
   rdoc (~> 3.12)
   redcarpet
-  redis (~> 3.0.0)
+  redis (~> 3.0.x)
   rspec (~> 2.11.0)
   simplecov
-  stemmer (~> 1.0.0)
+  stemmer (~> 1.0.x)
   yard (~> 0.7)
