@@ -38,10 +38,10 @@ class Linnaeus::Classifier < Linnaeus
     scores = {}
 
     @db.get_categories.each do |category|
-      words_with_count_for_category = @db.get_words_with_count_for_category category
-      total_word_count_sum_for_category = words_with_count_for_category.values.reduce(0){|sum, count| sum += count.to_i}
+      total_word_count_sum_for_category = @db.get_total_word_count_for_category category
 
       scores[category] = 0
+      words_with_count_for_category = @db.fetch_scores_for_words(category, text.encode(@encoding).downcase.split)
       count_word_occurrences(text).each do |word, count|
         tmp_score = (words_with_count_for_category[word].nil?) ? 0.1 : words_with_count_for_category[word].to_i
         scores[category] += Math.log(tmp_score / total_word_count_sum_for_category.to_f)
