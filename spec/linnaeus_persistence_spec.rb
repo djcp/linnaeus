@@ -14,8 +14,14 @@ describe Linnaeus::Persistence do
   it 'sets keys properly with defaults' do
     lp2 = get_linnaeus_persistence
     train_a_document_in('foobar')
-    lp2.redis.keys('*').should match_array ['Linnaeus:category', 'Linnaeus:cat:foobar']
+    lp2.redis.keys('*').should match_array ['Linnaeus:category', 'Linnaeus:cat:foobar', 'Linnaeus:cat:foobar:total']
   end
+
+  it 'has the right totals' do
+    lp2 = get_linnaeus_persistence
+    train_a_document_in('foobar')
+    lp2.redis.get('Linnaeus:cat:foobar:total').should eq '5'
+  end 
 
   context "custom scopes" do
     it 'sets keys properly' do
@@ -25,7 +31,7 @@ describe Linnaeus::Persistence do
       train_a_document_in('foobar', scope: 'new-scope')
 
       lp2.redis.keys('*').should match_array [
-        'Linnaeus:new-scope:cat:foobar', 'Linnaeus:new-scope:category'
+        'Linnaeus:new-scope:cat:foobar', 'Linnaeus:new-scope:category', 'Linnaeus:new-scope:cat:foobar:total'
       ]
     end
 
@@ -40,13 +46,14 @@ describe Linnaeus::Persistence do
 
       lp.redis.keys.should match_array [
         "Linnaeus:cat:foobar", "Linnaeus:category",
-        "Linnaeus:new-scope:cat:foobar", "Linnaeus:new-scope:category"
+        "Linnaeus:new-scope:cat:foobar", "Linnaeus:new-scope:category",
+        "Linnaeus:cat:foobar:total", "Linnaeus:new-scope:cat:foobar:total"
       ]
 
       lp2.clear_training_data
 
       lp.redis.keys.should match_array [
-        "Linnaeus:cat:foobar", "Linnaeus:category"
+        "Linnaeus:cat:foobar", "Linnaeus:category", "Linnaeus:cat:foobar:total"
       ]
     end
 

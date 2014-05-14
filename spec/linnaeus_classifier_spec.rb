@@ -24,7 +24,7 @@ describe Linnaeus::Classifier do
         { "movie"=>-6.272877006546167, "bird"=>-4.2626798770413155 }
       )
       subject.classification_scores('a directorial bird').should eq(
-        { "movie"=>-10.24316892009829, "bird"=>-10.827944847076676 }
+        { "movie"=>-12.545754013092335, "bird"=>-10.827944847076676 }
       )
     end
   end
